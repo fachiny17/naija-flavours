@@ -6,8 +6,9 @@ from datetime import datetime
 import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'nigerian-restaurant-secret-key-2026'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///nigerian_restaurant.db'
+# Use environment variables for production
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'nigerian-restaurant-secret-key-2026')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///nigerian_restaurant.db').replace('postgres://', 'postgresql://')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
