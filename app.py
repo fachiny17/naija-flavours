@@ -262,6 +262,8 @@ def qr_page():
     menu_url = request.host_url + 'menu'
     return render_template('qr_page.html', menu_url=menu_url)
 
+
 if __name__ == '__main__':
-    init_db()
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
