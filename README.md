@@ -1,4 +1,4 @@
-# 🍲 Naija Flavors - Professional Nigerian Restaurant Web App
+# 🍲 Naija Flavours - Professional Nigerian Restaurant Web App
 
 A stunning, production-ready restaurant menu application featuring authentic Nigerian cuisine with professional UI/UX design.
 
