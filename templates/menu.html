@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - Naija Flavors</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #008751;
+            --white: #ffffff;
+            --cream: #FFF8E7;
+            --dark-green: #005230;
+            --orange: #FF6B35;
+            --gold: #FDB913;
+            --text-dark: #1a1a1a;
+            --text-light: #666;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            color: var(--text-dark);
+        }
+        
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 248, 231, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--green);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--green);
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--green);
+        }
+        
+        /* Header */
+        .menu-header {
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            background: linear-gradient(135deg, rgba(0, 135, 81, 0.05) 0%, rgba(255, 107, 53, 0.05) 100%);
+        }
+        
+        .menu-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--green) 0%, var(--orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .menu-header p {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Filter Tabs */
+        .filter-container {
+            max-width: 1400px;
+            margin: -3rem auto 3rem;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .filter-tabs {
+            display: flex;
+            gap: 1rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 100px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        
+        .filter-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .filter-tab {
+            padding: 1rem 2rem;
+            border: none;
+            background: transparent;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            color: var(--text-dark);
+        }
+        
+        .filter-tab:hover {
+            background: var(--cream);
+        }
+        
+        .filter-tab.active {
+            background: var(--green);
+            color: white;
+        }
+        
+        /* Menu Content */
+        .menu-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .category-section {
+            margin-bottom: 5rem;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
+        .category-section.hidden {
+            display: none;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--green);
+        }
+        
+        .category-icon {
+            font-size: 3rem;
+        }
+        
+        .category-info h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--green);
+        }
+        
+        .category-info p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2rem;
+        }
+        
+        .menu-card {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 135, 81, 0.15);
+            border-color: var(--green);
+        }
+        
+        .card-content {
+            padding: 2rem;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            flex: 1;
+        }
+        
+        .card-price {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--green);
+            white-space: nowrap;
+            margin-left: 1rem;
+        }
+        
+        .card-description {
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .badge-time {
+            background: var(--cream);
+            color: var(--text-dark);
+        }
+        
+        .badge-spicy {
+            background: #FFE5E5;
+            color: #D32F2F;
+        }
+        
+        .badge-veg {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 6rem 2rem;
+        }
+        
+        .empty-state-icon {
+            font-size: 8rem;
+            margin-bottom: 2rem;
+            opacity: 0.3;
+        }
+        
+        .empty-state h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .menu-header h1 {
+                font-size: 3rem;
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .filter-tabs {
+                justify-content: flex-start;
+            }
+            
+            .category-info h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="logo">Naija Flavours</a>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('menu') }}" style="color: var(--green);">Menu</a></li>
+                <li><a href="{{ url_for('admin') }}">Admin</a></li>
+                <li><a href="{{ url_for('qr_page') }}">QR Code</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="menu-header">
+        <h1>Our Menu</h1>
+        <p>Explore authentic Nigerian cuisine crafted with traditional recipes and fresh ingredients</p>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="filter-container">
+        <div class="filter-tabs">
+            <button class="filter-tab active" onclick="filterCategory('all')">All Items</button>
+            {% for category in categories %}
+            <button class="filter-tab" onclick="filterCategory('{{ category.id }}')">
+                {{ category.icon }} {{ category.name }}
+            </button>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Menu Content -->
+    <div class="menu-content">
+        {% if categories %}
+            {% for category in categories %}
+                {% set category_items = menu_items|selectattr('category_id', 'equalto', category.id)|list %}
+                {% if category_items %}
+                    <div class="category-section" data-category="{{ category.id }}">
+                        <div class="category-header">
+                            <span class="category-icon">{{ category.icon }}</span>
+                            <div class="category-info">
+                                <h2>{{ category.name }}</h2>
+                                <p>{{ category.description }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="menu-grid">
+                            {% for item in category_items %}
+                                <div class="menu-card">
+                                    <div class="card-content">
+                                        <div class="card-header">
+                                            <h3 class="card-title">{{ item.name }}</h3>
+                                            <span class="card-price">₦{{ "{:,.0f}".format(item.price) }}</span>
+                                        </div>
+                                        
+                                        <p class="card-description">{{ item.description }}</p>
+                                        
+                                        <div class="card-meta">
+                                            {% if item.prep_time %}
+                                            <span class="badge badge-time">⏱️ {{ item.prep_time }}</span>
+                                            {% endif %}
+                                            {% if item.is_spicy %}
+                                            <span class="badge badge-spicy">🌶️ Spicy</span>
+                                            {% endif %}
+                                            {% if item.is_vegetarian %}
+                                            <span class="badge badge-veg">🌱 Vegetarian</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-state-icon">🍽️</div>
+                <h3>No menu items available</h3>
+                <p>Check back soon or visit our admin panel to add items</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function filterCategory(categoryId) {
+            // Update active tab
+            const tabs = document.querySelectorAll('.filter-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filter categories
+            const sections = document.querySelectorAll('.category-section');
+            sections.forEach(section => {
+                if (categoryId === 'all' || section.dataset.category === categoryId) {
+                    section.classList.remove('hidden');
+                } else {
+                    section.classList.add('hidden');
+                }
+            });
+            
+            // Smooth scroll to content
+            document.querySelector('.menu-content').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+        }
+    </script>
+</body>
+</html>

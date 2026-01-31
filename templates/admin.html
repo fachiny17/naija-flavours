@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Naija Flavors</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #008751;
+            --white: #ffffff;
+            --cream: #FFF8E7;
+            --dark-green: #005230;
+            --orange: #FF6B35;
+            --gold: #FDB913;
+            --text-dark: #1a1a1a;
+            --text-light: #666;
+            --red: #DC3545;
+            --blue: #0056D2;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            color: var(--text-dark);
+        }
+        
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 248, 231, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--green);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--green);
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--green);
+        }
+        
+        /* Header */
+        .admin-header {
+            background: linear-gradient(135deg, var(--green) 0%, var(--dark-green) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .admin-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+        
+        .admin-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        /* Flash Messages */
+        .flash-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .flash {
+            padding: 1.2rem 2rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 500;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .flash.success {
+            background: #D4EDDA;
+            color: #155724;
+            border-left: 5px solid #28A745;
+        }
+        
+        .flash.error {
+            background: #F8D7DA;
+            color: #721C24;
+            border-left: 5px solid #DC3545;
+        }
+        
+        /* Main Content */
+        .admin-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        
+        .admin-section {
+            background: white;
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .admin-section:hover {
+            border-color: var(--green);
+            box-shadow: 0 10px 30px rgba(0, 135, 81, 0.1);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 3px solid var(--green);
+        }
+        
+        .section-icon {
+            font-size: 2.5rem;
+        }
+        
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--green);
+        }
+        
+        /* Forms */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--green);
+            box-shadow: 0 0 0 4px rgba(0, 135, 81, 0.1);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .checkbox-label input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: var(--green);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--dark-green);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 135, 81, 0.3);
+        }
+        
+        .btn-danger {
+            background: var(--red);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+        }
+        
+        .btn-danger:hover {
+            background: #C82333;
+        }
+        
+        .btn-warning {
+            background: var(--orange);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+        }
+        
+        .btn-warning:hover {
+            background: #E65A2B;
+        }
+        
+        /* Categories Display */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .category-card {
+            background: var(--cream);
+            padding: 1.5rem;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .category-icon-large {
+            font-size: 2.5rem;
+        }
+        
+        .category-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        /* Items Table */
+        .items-table-container {
+            overflow-x: auto;
+            margin-top: 2rem;
+            border-radius: 15px;
+        }
+        
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        .items-table thead {
+            background: var(--green);
+            color: white;
+        }
+        
+        .items-table th {
+            padding: 1.2rem;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        
+        .items-table td {
+            padding: 1.2rem;
+            border-bottom: 1px solid #F0F0F0;
+        }
+        
+        .items-table tbody tr {
+            transition: background 0.2s;
+        }
+        
+        .items-table tbody tr:hover {
+            background: var(--cream);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-available {
+            background: #D4EDDA;
+            color: #155724;
+        }
+        
+        .status-unavailable {
+            background: #F8D7DA;
+            color: #721C24;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .item-badges {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .mini-badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .badge-spicy {
+            background: #FFE5E5;
+            color: #D32F2F;
+        }
+        
+        .badge-veg {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+        
+        .empty-message {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .admin-section {
+                padding: 2rem 1.5rem;
+            }
+            
+            .items-table {
+                font-size: 0.9rem;
+            }
+            
+            .items-table th,
+            .items-table td {
+                padding: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="logo">Naija Flavors</a>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('menu') }}">Menu</a></li>
+                <li><a href="{{ url_for('admin') }}" style="color: var(--green);">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="admin-header">
+        <h1>🔧 Admin Dashboard</h1>
+        <p>Manage your restaurant menu, categories, and items</p>
+    </div>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-container">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">
+                        <span style="font-size: 1.5rem;">{% if category == 'success' %}✅{% else %}❌{% endif %}</span>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <div class="admin-content">
+        <!-- Category Management -->
+        <div class="admin-section">
+            <div class="section-header">
+                <span class="section-icon">📂</span>
+                <h2>Manage Categories</h2>
+            </div>
+            
+            <form method="POST" action="{{ url_for('add_category') }}">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="category_name">Category Name</label>
+                        <input type="text" id="category_name" name="name" required placeholder="e.g., Soups & Stews">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="category_icon">Icon (Emoji)</label>
+                        <input type="text" id="category_icon" name="icon" placeholder="🍲" maxlength="2">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category_description">Description</label>
+                    <textarea id="category_description" name="description" placeholder="Brief description of this category"></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">➕ Add Category</button>
+            </form>
+            
+            {% if categories %}
+                <div class="categories-grid">
+                    {% for category in categories %}
+                        <div class="category-card">
+                            <div class="category-info">
+                                <span class="category-icon-large">{{ category.icon }}</span>
+                                <div>
+                                    <div class="category-name">{{ category.name }}</div>
+                                    <small style="color: var(--text-light);">{{ category.items|length }} items</small>
+                                </div>
+                            </div>
+                            <a href="{{ url_for('delete_category', id=category.id) }}" 
+                               class="btn btn-danger"
+                               onclick="return confirm('Delete {{ category.name }} and all its items?')">
+                                🗑️
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty-message">No categories yet. Add your first category above!</p>
+            {% endif %}
+        </div>
+
+        <!-- Menu Item Management -->
+        <div class="admin-section">
+            <div class="section-header">
+                <span class="section-icon">🍽️</span>
+                <h2>Manage Menu Items</h2>
+            </div>
+            
+            <form method="POST" action="{{ url_for('add_item') }}">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="item_name">Item Name</label>
+                        <input type="text" id="item_name" name="name" required placeholder="e.g., Jollof Rice">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" name="category_id" required>
+                            <option value="">Select a category</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category.icon }} {{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" placeholder="Describe the dish in detail..."></textarea>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="price">Price (₦)</label>
+                        <input type="number" id="price" name="price" step="0.01" min="0" required placeholder="2500">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="prep_time">Prep Time</label>
+                        <input type="text" id="prep_time" name="prep_time" placeholder="e.g., 15-20 min">
+                    </div>
+                </div>
+                
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="is_spicy">
+                        <span>🌶️ Spicy</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="is_vegetarian">
+                        <span>🌱 Vegetarian</span>
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem;">➕ Add Menu Item</button>
+            </form>
+            
+            {% if menu_items %}
+                <div class="items-table-container">
+                    <table class="items-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Prep Time</th>
+                                <th>Tags</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in menu_items %}
+                                <tr>
+                                    <td><strong>{{ item.name }}</strong></td>
+                                    <td>{{ item.category.icon }} {{ item.category.name }}</td>
+                                    <td><strong style="color: var(--green);">₦{{ "{:,.0f}".format(item.price) }}</strong></td>
+                                    <td>{{ item.prep_time or '—' }}</td>
+                                    <td>
+                                        <div class="item-badges">
+                                            {% if item.is_spicy %}
+                                            <span class="mini-badge badge-spicy">🌶️ Spicy</span>
+                                            {% endif %}
+                                            {% if item.is_vegetarian %}
+                                            <span class="mini-badge badge-veg">🌱 Veg</span>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge {% if item.available %}status-available{% else %}status-unavailable{% endif %}">
+                                            {{ '✓ Available' if item.available else '✗ Unavailable' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <a href="{{ url_for('toggle_item', id=item.id) }}" class="btn btn-warning">
+                                                {{ '⏸️' if item.available else '▶️' }}
+                                            </a>
+                                            <a href="{{ url_for('delete_item', id=item.id) }}" 
+                                               class="btn btn-danger"
+                                               onclick="return confirm('Delete {{ item.name }}?')">
+                                                🗑️
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="empty-message">No menu items yet. Add your first item above!</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

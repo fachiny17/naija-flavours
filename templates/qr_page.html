@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code - Naija Flavors</title>
+    <style>
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #FFF8E7;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0, 135, 81, 0.1);
+        }
+        h1 {
+            color: #008751;
+            margin-bottom: 10px;
+        }
+        .qr-code {
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            display: inline-block;
+        }
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .url-box {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 15px 0;
+            word-break: break-all;
+        }
+        .btn {
+            display: inline-block;
+            background: #008751;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📱 Scan for Menu</h1>
+        <p>Scan this QR code with your phone to view our digital menu</p>
+        
+        <div class="qr-code">
+            <img src="{{ url_for('generate_qr') }}" alt="QR Code" style="width: 300px;">
+        </div>
+        
+        <div class="instructions">
+            <h3>How to use:</h3>
+            <ol>
+                <li>Open your phone's camera</li>
+                <li>Point it at the QR code</li>
+                <li>Tap the notification that appears</li>
+                <li>Browse our menu on your phone</li>
+            </ol>
+            
+            <div style="text-align: center; margin-top: 15px;">
+                <strong>Direct URL:</strong>
+                <div class="url-box">{{ menu_url }}</div>
+                <a href="{{ menu_url }}" class="btn">Open Menu ↗</a>
+            </div>
+        </div>
+        
+        <div style="margin-top: 30px; font-size: 0.9em; color: #666;">
+            <a href="{{ url_for('index') }}">← Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>
