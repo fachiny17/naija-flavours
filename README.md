@@ -562,8 +562,6 @@ If you find this project helpful, consider:
 - ⭐ Starring the repository
 - 🐛 Reporting bugs
 - 💡 Suggesting new features
-- 📢 Sharing with others
-- ☕ [Buying me a coffee](https://buymeacoffee.com/fachiny17)
 
 ---
 
