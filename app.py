@@ -50,7 +50,7 @@ class MenuItem(db.Model):
         return f'<MenuItem {self.name}>'
 
 # Initialize database - WITH ERROR HANDLING
-def init_database():
+def init_db():
     try:
         with app.app_context():
             print(f"🔗 Using database URL: {app.config['SQLALCHEMY_DATABASE_URI']}")
@@ -151,8 +151,8 @@ def init_database():
         print(f"⚠️ Database initialization error: {str(e)}")
         print("⚠️ Continuing without database...")
 
-# Call init_database AFTER all models and routes are defined
-init_database()
+# Call init_db AFTER all models and routes are defined
+init_db()
 
 # Routes (ALL ROUTES REMAIN THE SAME)
 @app.route('/')
@@ -333,7 +333,7 @@ def health():
 @app.route('/init-db')
 def init_db_route():
     """Manually initialize database"""
-    init_database()
+    init_db()
     return "Database initialization attempted. Check logs."
 
 if __name__ == '__main__':
