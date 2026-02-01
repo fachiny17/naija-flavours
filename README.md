@@ -35,7 +35,7 @@
 
 ## 🌟 Overview
 
-**Naija Flavors** is a sophisticated, full-stack web application built with Flask that celebrates authentic Nigerian cuisine. The platform features a beautifully designed customer-facing menu, comprehensive admin dashboard, and animated backgrounds inspired by traditional Nigerian aesthetics.
+**Naija Flavours** is a sophisticated, full-stack web application built with Flask that celebrates authentic Nigerian cuisine. The platform features a beautifully designed customer-facing menu, comprehensive admin dashboard, and animated backgrounds inspired by traditional Nigerian aesthetics.
 
 This project demonstrates modern web development practices, responsive design principles, and cultural authenticity in digital product design.
 
@@ -538,11 +538,8 @@ in the Software without restriction...
 
 **Project Maintainer**: Your Name
 
-- 🌐 Website: [yourwebsite.com](https://yourwebsite.com)
-- 📧 Email: your.email@example.com
-- 💼 LinkedIn: [linkedin.com/in/yourprofile](https://linkedin.com/in/yourprofile)
-- 🐦 Twitter: [@yourhandle](https://twitter.com/yourhandle)
-- 📱 GitHub: [@yourusername](https://github.com/yourusername)
+- 💼 LinkedIn: [linkedin.com/in/fachiny17](https://linkedin.com/in/fachiny17)
+- 📱 GitHub: [@fachiny17](https://github.com/fachiny17)
 
 ---
 
