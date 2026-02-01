@@ -554,15 +554,6 @@ in the Software without restriction...
 
 ---
 
-## 📊 Project Stats
-
-![GitHub repo size](https://img.shields.io/github/repo-size/fachiny17/naija-flavours)
-![GitHub stars](https://img.shields.io/github/stars/fachiny17/naija-flavours?style=social)
-![GitHub forks](https://img.shields.io/github/forks/fachiny17/naija-flavours?style=social)
-![GitHub issues](https://img.shields.io/github/issues/fachiny17/naija-flavours)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/fachiny17/naija-flavours)
-
----
 
 ## 💡 Support
 
@@ -572,7 +563,7 @@ If you find this project helpful, consider:
 - 🐛 Reporting bugs
 - 💡 Suggesting new features
 - 📢 Sharing with others
-- ☕ [Buying me a coffee](https://buymeacoffee.com/yourhandle)
+- ☕ [Buying me a coffee](https://buymeacoffee.com/fachiny17)
 
 ---
 
