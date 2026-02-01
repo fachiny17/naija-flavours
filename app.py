@@ -152,7 +152,7 @@ def init_db():
         print("⚠️ Continuing without database...")
 
 # Call init_db AFTER all models and routes are defined
-#init_db()
+init_db()
 
 # Routes (ALL ROUTES REMAIN THE SAME)
 @app.route('/')
@@ -283,7 +283,7 @@ def edit_item(id):
 # QR Code Generation
 @app.route('/qr-code')
 def generate_qr():
-    menu_url = request.host_url + 'home'
+    menu_url = request.host_url + 'menu'
     
     # Create QR code
     qr = qrcode.QRCode(
@@ -308,7 +308,7 @@ def generate_qr():
 @app.route('/qr')
 def qr_page():
     # Page to display the QR code
-    menu_url = request.host_url + 'home'
+    menu_url = request.host_url + 'menu'
     return render_template('qr_page.html', menu_url=menu_url)
 
 # Add a health check endpoint
