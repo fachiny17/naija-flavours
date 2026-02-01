@@ -9,7 +9,7 @@
 
 **A modern, production-ready restaurant management system showcasing authentic Nigerian cuisine**
 
-[Live Demo](https://naija-flavours.onrender.com/) • [Report Bug](https://github.com/yourusername/naija-flavors/issues) • [Request Feature](https://github.com/yourusername/naija-flavors/issues)
+[Live Demo](https://naija-flavours.onrender.com/) • [Report Bug](https://github.com/fachiny17/naija-flavours/issues) • [Request Feature](https://github.com/fachiny17/naija-flavours/issues)
 
 </div>
 
