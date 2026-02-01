@@ -17,7 +17,7 @@ if database_url and database_url.startswith('postgres://'):
 elif not database_url:
     database_url = 'sqlite:///nigerian_restaurant.db'
 
-app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///nigerian_restaurant.db').replace('postgres://', 'postgresql://')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
