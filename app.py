@@ -5,6 +5,14 @@ import io
 from datetime import datetime
 import os
 
+from io import BytesIO
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, PageBreak
+from reportlab.lib.enums import TA_CENTER, TA_LEFT
+
 app = Flask(__name__)
 
 # environment variables for production
@@ -310,6 +318,174 @@ def qr_page():
     # Page to display the QR code
     menu_url = request.host_url + 'menu'
     return render_template('qr_page.html', menu_url=menu_url)
+
+@app.route('/download-menu-pdf')
+def download_menu_pdf():
+    """Generate and download the complete menu as a PDF"""
+    
+    # Create a buffer to hold the PDF
+    buffer = BytesIO()
+    
+    # Create the PDF document
+    doc = SimpleDocTemplate(buffer, pagesize=letter, rightMargin=50, leftMargin=50, 
+                           topMargin=50, bottomMargin=50)
+    
+    # Container for the 'Flowable' objects
+    elements = []
+    
+    # Define styles
+    styles = getSampleStyleSheet()
+    
+    # Custom styles
+    title_style = ParagraphStyle(
+        'CustomTitle',
+        parent=styles['Heading1'],
+        fontSize=28,
+        textColor=colors.HexColor('#008751'),
+        spaceAfter=12,
+        alignment=TA_CENTER,
+        fontName='Helvetica-Bold'
+    )
+    
+    subtitle_style = ParagraphStyle(
+        'CustomSubtitle',
+        parent=styles['Normal'],
+        fontSize=12,
+        textColor=colors.HexColor('#666666'),
+        spaceAfter=30,
+        alignment=TA_CENTER,
+        fontName='Helvetica'
+    )
+    
+    category_style = ParagraphStyle(
+        'CategoryStyle',
+        parent=styles['Heading2'],
+        fontSize=18,
+        textColor=colors.HexColor('#008751'),
+        spaceAfter=12,
+        spaceBefore=20,
+        fontName='Helvetica-Bold'
+    )
+    
+    item_name_style = ParagraphStyle(
+        'ItemName',
+        parent=styles['Normal'],
+        fontSize=12,
+        textColor=colors.HexColor('#1a1a1a'),
+        fontName='Helvetica-Bold'
+    )
+    
+    item_desc_style = ParagraphStyle(
+        'ItemDesc',
+        parent=styles['Normal'],
+        fontSize=10,
+        textColor=colors.HexColor('#666666'),
+        fontName='Helvetica'
+    )
+    
+    # Add title
+    title = Paragraph("Naija Flavours Menu", title_style)
+    elements.append(title)
+    
+    # Add subtitle
+    subtitle = Paragraph("Authentic Nigerian Cuisine", subtitle_style)
+    elements.append(subtitle)
+    
+    # Add date
+    date_text = Paragraph(f"Generated on {datetime.now().strftime('%B %d, %Y')}", 
+                         ParagraphStyle('DateStyle', parent=styles['Normal'], 
+                                      fontSize=9, textColor=colors.grey, 
+                                      alignment=TA_CENTER))
+    elements.append(date_text)
+    elements.append(Spacer(1, 20))
+    
+    # Get all categories and items
+    categories = Category.query.all()
+    
+    for category in categories:
+        # Get items for this category
+        items = MenuItem.query.filter_by(category_id=category.id, available=True).all()
+        
+        if items:
+            # Category header
+            cat_name = f"{category.icon} {category.name}" if category.icon else category.name
+            cat_header = Paragraph(cat_name, category_style)
+            elements.append(cat_header)
+            
+            if category.description:
+                cat_desc = Paragraph(category.description, item_desc_style)
+                elements.append(cat_desc)
+                elements.append(Spacer(1, 10))
+            
+            # Create table for items
+            table_data = []
+            
+            for item in items:
+                # Item name and price row
+                name_cell = Paragraph(item.name, item_name_style)
+                price_cell = Paragraph(f"₦{item.price:,.0f}", item_name_style)
+                
+                # Build tags
+                tags = []
+                if item.is_spicy:
+                    tags.append("🌶️ Spicy")
+                if item.is_vegetarian:
+                    tags.append("🌱 Vegetarian")
+                if item.prep_time:
+                    tags.append(f"⏱️ {item.prep_time}")
+                
+                tags_text = " • ".join(tags) if tags else ""
+                
+                # Description with tags
+                desc_text = item.description if item.description else ""
+                if tags_text:
+                    desc_text += f"<br/><i>{tags_text}</i>"
+                
+                desc_cell = Paragraph(desc_text, item_desc_style)
+                
+                # Add rows
+                table_data.append([name_cell, price_cell])
+                table_data.append([desc_cell, ''])
+                table_data.append([Spacer(1, 8), ''])  # Add spacing between items
+            
+            # Create and style the table
+            item_table = Table(table_data, colWidths=[4.5*inch, 1.5*inch])
+            item_table.setStyle(TableStyle([
+                ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+                ('LEFTPADDING', (0, 0), (-1, -1), 0),
+                ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+                ('TOPPADDING', (0, 0), (-1, -1), 2),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 2),
+            ]))
+            
+            elements.append(item_table)
+            elements.append(Spacer(1, 15))
+    
+    # Add footer
+    elements.append(Spacer(1, 30))
+    footer = Paragraph(
+        "Thank you for choosing Naija Flavours!<br/>For orders and inquiries, <a href='https://naija-flavours.onrender.com/'><b>visit us online</b></a>.",
+        ParagraphStyle('Footer', parent=styles['Normal'], 
+                      fontSize=9, textColor=colors.grey, 
+                      alignment=TA_CENTER, fontName='Helvetica-Oblique')
+    )
+    elements.append(footer)
+    
+    # Build PDF
+    doc.build(elements)
+    
+    # Move buffer position to beginning
+    buffer.seek(0)
+    
+    # Send the PDF
+    return send_file(
+        buffer,
+        as_attachment=True,
+        download_name='naija-flavors-menu.pdf',
+        mimetype='application/pdf'
+    )
+
+
 
 # Add a health check endpoint
 @app.route('/health')
