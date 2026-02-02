@@ -291,7 +291,8 @@ def edit_item(id):
 # QR Code Generation
 @app.route('/qr-code')
 def generate_qr():
-    menu_url = request.host_url + 'menu'
+    # Direct PDF download URL
+    pdf_url = request.host_url + 'qr-pdf'
     
     # Create QR code
     qr = qrcode.QRCode(
@@ -300,7 +301,7 @@ def generate_qr():
         box_size=10,
         border=4,
     )
-    qr.add_data(menu_url)
+    qr.add_data(pdf_url)
     qr.make(fit=True)
     
     # Create image
@@ -318,6 +319,12 @@ def qr_page():
     # Page to display the QR code
     menu_url = request.host_url + 'menu'
     return render_template('qr_page.html', menu_url=menu_url)
+
+@app.route('/qr-pdf')
+def qr_pdf_download():
+    """Route that directly downloads PDF when accessed via QR code"""
+    flash('Thank you for scanning! Downloading menu...', 'success')
+    return download_menu_pdf()
 
 @app.route('/download-menu-pdf')
 def download_menu_pdf():

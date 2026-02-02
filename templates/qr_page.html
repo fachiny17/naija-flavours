@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code - Naija Flavors</title>
+    <title>QR Code - Naija Flavours</title>
     <style>
         body {
             font-family: 'DM Sans', sans-serif;
@@ -55,35 +55,48 @@
             margin-top: 20px;
             font-weight: bold;
         }
+        .note {
+            background: #FFF3CD;
+            border-left: 4px solid #FFC107;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>📱 Scan for Menu</h1>
-        <p>Scan this QR code with your phone to view our digital menu</p>
+        <p>Scan this QR code with your phone to <strong>automatically download</strong> our full menu PDF</p>
         
         <div class="qr-code">
             <img src="{{ url_for('generate_qr') }}" alt="QR Code" style="width: 300px;">
         </div>
         
+        <div class="note">
+            <strong>⚠️ Important:</strong> When scanning, allow the download. The PDF will save as <code>naija-flavours-menu.pdf</code>
+        </div>
+        
         <div class="instructions">
-            <h3>How to use:</h3>
+            <h3>How it works:</h3>
             <ol>
-                <li>Open your phone's camera</li>
-                <li>Point it at the QR code</li>
-                <li>Tap the notification that appears</li>
-                <li>Browse our menu on your phone</li>
+                <li>Scan QR code with phone camera</li>
+                <li>Tap the notification/link that appears</li>
+                <li>PDF automatically downloads to device</li>
+                <li>Open the PDF to view full menu</li>
             </ol>
             
             <div style="text-align: center; margin-top: 15px;">
-                <strong>Direct URL:</strong>
-                <div class="url-box">{{ menu_url }}</div>
-                <a href="{{ menu_url }}" class="btn">Open Menu ↗</a>
+                <strong>Direct Download Link:</strong>
+                <div class="url-box">{{ request.host_url }}qr-pdf</div>
+                <a href="{{ url_for('qr_pdf_download') }}" class="btn">Download PDF Now ↓</a>
             </div>
         </div>
         
         <div style="margin-top: 30px; font-size: 0.9em; color: #666;">
-            <a href="{{ url_for('index') }}">← Back to Home</a>
+            <a href="{{ url_for('index') }}">← Back to Home</a> | 
+            <a href="{{ url_for('menu') }}">View Web Menu</a>
         </div>
     </div>
 </body>
